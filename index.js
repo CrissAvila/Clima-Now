@@ -24,7 +24,6 @@ const main = async() => {
                 // Clima
 
                 //Mostrar resultados
-                console.clear();
                 console.log('\nInformacion de la ciudad\n'.green);
                 console.log('Ciudad:', );
                 console.log('Lat:', );
