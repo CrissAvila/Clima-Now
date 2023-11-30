@@ -1,8 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosHeaders } from 'axios';
 
 export default class Busqueda {
 
     historial = ['Madrid', 'Brasil', 'Argentina'];
+
+    get paramsMapBox() {
+        return {
+            'access_token': process.env.MAPBOX_KEY,
+            'limit': 5,
+            'language': 'es'
+        }
+    }
 
     constructor() {
         //TODO leer DB si existe    
@@ -12,8 +20,12 @@ export default class Busqueda {
 
         try {
             // peticion http
-            // console.log('ciudad', lugar);
-            const resp = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/MADRID.json?proximity=ip&language=es&access_token=pk.eyJ1IjoiY3Jpc3NhdmlsYWEiLCJhIjoiY2xwajZ5ZDd4MDVtMTJrbDNpYWVvMjY5aiJ9.QxicDBs_isK0r1Vz2l3WWw&limit=5');
+            const instanciaAxios = axios.create({
+                baseURL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${ lugar }.json`,
+                params: this.paramsMapBox
+            })
+
+            const resp = await instanciaAxios.get();
             console.log(resp.data);
             
             return []

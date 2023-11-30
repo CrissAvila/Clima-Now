@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { inquirerMenu, leerInput, pausa } from "./helpers/inquirer.js";
 import Busqueda from "./models/busquedas.js";
 
