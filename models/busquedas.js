@@ -26,9 +26,12 @@ export default class Busqueda {
             })
 
             const resp = await instanciaAxios.get();
-            console.log(resp.data);
-            
-            return []
+            return resp.data.features.map( lugar => ({
+                id:      lugar.id,
+                nombre:  lugar.place_name,
+                longitud:lugar.center[0],
+                latitud: lugar.center[1],
+            }));
 
         } catch (error) {
             return [];
