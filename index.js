@@ -22,15 +22,15 @@ const main = async() => {
                 
                 // Selecionar el lugar
                 const id = await listarLugares(lugares);
-                console.log({ id });
+                const lugarSel = lugares.find( l => l.id === id );
                 
                 // Clima
 
                 //Mostrar resultados
                 console.log('\nInformacion de la ciudad\n'.green);
-                console.log('Ciudad:', );
-                console.log('Lat:', );
-                console.log('Lng:', );
+                console.log('Ciudad:', lugarSel.nombre );
+                console.log('Lat:', lugarSel.latitud );
+                console.log('Lng:', lugarSel.longitud );
                 console.log('Temperatura:', );
                 console.log('Minima:', );
                 console.log('Maxima:', );
