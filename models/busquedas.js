@@ -1,8 +1,17 @@
+import fs from 'fs';
+
 import axios, { AxiosHeaders } from 'axios';
+import path from 'path';
 
 export default class Busqueda {
 
-    historial = ['Madrid', 'Brasil', 'Argentina'];
+    historial = [];
+    dbPath = './db/database.json';
+
+    constructor() {
+        this.leerDB();
+    }
+
 
     get paramsMapBox() {
         return {
@@ -20,8 +29,14 @@ export default class Busqueda {
         }
     }
     
-    constructor() {
-        //TODO leer DB si existe    
+    get historialCapitalizado() {
+        return this.historial.map( lugar => {
+
+            let palabras = lugar.split( ' ' );
+            palabras = palabras.map( p => p[0].toUpperCase() + p.substring(1) );
+
+            return palabras.join( ' ' );
+        })
     }
 
     async ciudad( lugar = '' ) {
@@ -67,6 +82,39 @@ export default class Busqueda {
         } catch (error) {
             console.log(error);
         }
+
+    }
+
+    agregarHistorial( lugar = '') {
+       
+        if ( this.historial.includes( lugar.toLocaleLowerCase() ) ){
+            return;
+        }
+        this.historial = this.historial.splice(0,5);
+
+        this.historial.unshift( lugar.toLocaleLowerCase() );
+
+        // grabar en DB
+        this.guardarDB();
+    }
+
+    guardarDB() {
+
+        const payload = {
+            historial: this.historial
+        };
+
+        fs.writeFileSync( this.dbPath, JSON.stringify( payload ))
+    }
+
+    leerDB () {
+        //si el archivo existe 
+        if ( !fs.existsSync( this.dbPath ) ) return;
+
+        const info = fs.readFileSync( this.dbPath, { encoding: 'utf-8' });
+        const data = JSON.parse( info );
+
+        this.historial = data.historial;
 
     }
 
